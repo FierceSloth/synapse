@@ -1,0 +1,30 @@
+:root {
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-size-micro: 8px;
+  --font-size-tech: 10px;
+  --font-size-label: 12px;
+  --font-size-body: 14px;
+  --font-size-title: 18px;
+
+  --bg-base: #030712;
+  --bg-surface: #040a16;
+
+  --cl-highlight: #e0f7fa;
+  --cl-primary: #00f0ff;
+  --cl-secondary: #06b6d4;
+  --cl-muted: #0891b2;
+  --cl-dark: #155e75;
+  --cl-deep: #1e3a8a;
+  --cl-glow: #0088ff;
+
+  --border-surface-1: rgba(0, 240, 255, 0.1);
+  --border-surface-2: rgba(0, 240, 255, 0.25);
+  --border-surface-3: rgba(0, 240, 255, 0.4);
+  --border-surface-4: #00f0ff;
+  --hud-grid-color: rgba(0, 240, 255, 0.05);
+
+  --z-bg: 0;
+  --z-base: 10;
+  --z-overlay: 50;
+  --z-floating: 100;
+}

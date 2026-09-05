@@ -1,0 +1,28 @@
+$bp-large: 1200px;
+$bp-medium: 992px;
+$bp-small: 768px;
+$bp-mobile: 480px;
+
+@mixin media-lg {
+  @media (max-width: $bp-large) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media (max-width: $bp-medium) {
+    @content;
+  }
+}
+
+@mixin media-sm {
+  @media (max-width: $bp-small) {
+    @content;
+  }
+}
+
+@mixin media-xs {
+  @media (max-width: $bp-mobile) {
+    @content;
+  }
+}

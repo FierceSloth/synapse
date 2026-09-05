@@ -1,0 +1,17 @@
+@use './abstract/constants';
+@use './abstract/mixins';
+@use './base/base';
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 80px;
+  position: relative;
+}
