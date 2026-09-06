@@ -1,9 +1,10 @@
+import { Sidebar } from '@/widgets/sidebar';
 import styles from './workspace-page.module.scss';
 
 export function WorkspacePage() {
   return (
     <div className={styles.page}>
-      <aside className={styles.sidebar} />
+      <Sidebar />
 
       <main className={styles.main}>
         <header className={styles.header}>
