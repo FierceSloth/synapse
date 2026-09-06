@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
 import '@/app/styles/style.scss';
+import type { ReactNode } from 'react';
 
 export const metadata = {
   title: 'SYNAPSE // OS',
@@ -9,7 +9,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="bg">
+          <div className="bgGlowBlue" />
+          <div className="bgGlowCyan" />
+        </div>
+        <div id="root">{children}</div>
+      </body>
     </html>
   );
 }

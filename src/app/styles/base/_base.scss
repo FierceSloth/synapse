@@ -18,6 +18,10 @@ p {
   margin: 0;
 }
 
+main {
+  padding: 0 !important;
+}
+
 html {
   font-size: clamp(14px, 0.28vw + 13.1px, 16px);
   overflow-y: scroll;
@@ -45,7 +49,7 @@ html {
 
 body {
   background-color: var(--bg-base);
-  color: var(--text-highlight);
+  color: var(--cl-highlight);
   font-family: var(--font-mono);
   min-height: 100vh;
   display: flex;
@@ -70,9 +74,10 @@ body {
       linear-gradient(to right, var(--hud-grid-color) 1px, transparent 1px),
       linear-gradient(to bottom, var(--hud-grid-color) 1px, transparent 1px);
     background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);
 
     pointer-events: none;
-    z-index: -1;
+    z-index: var(--z-bg);
   }
 }
 
@@ -89,4 +94,34 @@ body {
 a {
   text-decoration: none;
   color: var(--text-primary);
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: var(--z-bg);
+
+  .bgGlowBlue {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 384px;
+    height: 384px;
+    background: rgba(0, 136, 255, 0.1);
+    border-radius: 50%;
+    filter: blur(130px);
+  }
+
+  .bgGlowCyan {
+    position: absolute;
+    bottom: 20%;
+    right: 20%;
+    width: 500px;
+    height: 500px;
+    background: rgba(0, 240, 255, 0.05);
+    border-radius: 50%;
+    filter: blur(130px);
+  }
 }

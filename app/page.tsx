@@ -1,3 +1,2 @@
-export default function Home() {
-  return <div>Test</div>;
-}
+import { WorkspacePage } from '@/pages/workspace';
+export default WorkspacePage;
