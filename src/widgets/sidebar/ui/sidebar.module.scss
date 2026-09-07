@@ -65,14 +65,14 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
 }
 
 .archivesHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
 }
 
 .archivesTitle {
@@ -91,7 +91,7 @@
 
 .logItem {
   padding: 10px 12px;
-  border-left: 1px solid rgba(0, 240, 255, 0.2);
+  border-left: 1px solid var(--cl-dark);
   background: rgba(4, 10, 22, 0.4);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -102,9 +102,13 @@
   }
 
   &.active {
-    border-left: 2px solid var(--cl-primary);
+    border-left: 1px solid var(--cl-primary);
     background: rgba(0, 240, 255, 0.08);
     box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
+
+    .logTime {
+      color: var(--cl-primary);
+    }
   }
 }
 

@@ -50,7 +50,7 @@
 .primary {
   background: #00eeff50;
   border: 1px solid var(--cl-primary);
-  color: var(--cl-white);
+  color: var(--cl-highlight);
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
 
   &:hover:not(:disabled) {
