@@ -24,17 +24,6 @@
   position: relative;
 }
 
-.header {
-  height: 3.5rem;
-  flex-shrink: 0;
-  background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border-surface-2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-}
-
 .content {
   flex: 1;
   overflow-y: auto;
