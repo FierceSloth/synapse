@@ -1,6 +1,7 @@
 'use client';
 
 import { SwarmInput } from '@/features/swarm-input';
+import { PatternSelector } from '@/features/pattern-selector';
 import styles from './new-directive.module.scss';
 
 export interface NewDirectiveProps {
@@ -13,7 +14,7 @@ export function NewDirective({ initialPrompt, onEngage }: NewDirectiveProps) {
     <div className={styles.container}>
       <div className={styles.agentsPlaceholder} />
       <SwarmInput initialPrompt={initialPrompt} onEngage={onEngage} />
-      <div className={styles.patternsPlaceholder} />
+      <PatternSelector />
     </div>
   );
 }
