@@ -1,0 +1,226 @@
+.terminalWrapper {
+  position: relative;
+  background: rgba(4, 10, 22, 0.85);
+  border: 1px solid var(--border-surface-2);
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.12),
+    inset 0 0 20px rgba(0, 240, 255, 0.03);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:focus-within {
+    border-color: var(--border-surface-3);
+    box-shadow:
+      0 0 25px rgba(0, 240, 255, 0.2),
+      inset 0 0 25px rgba(0, 240, 255, 0.05);
+  }
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-surface-2);
+  background: var(--bg-surface-1);
+}
+
+.terminalTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cl-secondary);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--cl-secondary);
+}
+
+.encryptionBadge {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  color: var(--cl-muted);
+  text-transform: uppercase;
+}
+
+.terminalBody {
+  padding: 16px 16px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 85px;
+  background: transparent;
+  border: none;
+  color: var(--cl-highlight);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  resize: none;
+  outline: none;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--hud-grid-color);
+    transition: background-color 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--border-surface-1);
+  }
+
+  &::placeholder {
+    color: rgba(8, 145, 178, 0.55);
+  }
+}
+
+.terminalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border-surface-2);
+  background: var(--bg-surface-1);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.leftControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.attachBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--cl-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--cl-primary);
+    text-shadow: 0 0 6px rgba(0, 240, 255, 0.6);
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 14px;
+  background-color: var(--border-surface-2);
+}
+
+.depthControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--cl-muted);
+  user-select: none;
+}
+
+.depthBars {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.depthBar {
+  width: 4px;
+  height: 12px;
+  border-radius: 1px;
+  background: rgba(0, 240, 255, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &.filled {
+    background: var(--cl-primary);
+    box-shadow: 0 0 4px rgba(0, 240, 255, 0.6);
+  }
+}
+
+.tokenCounter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--cl-muted);
+  user-select: none;
+  text-transform: uppercase;
+
+  .counterValue {
+    font-size: 10px;
+    color: var(--cl-secondary);
+    font-weight: 700;
+  }
+
+  .counterSlash {
+    color: rgba(0, 240, 255, 0.25);
+  }
+}
+
+.cornerTl {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--cl-primary);
+  border-left: 2px solid var(--cl-primary);
+  pointer-events: none;
+}
+
+.cornerTr {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--cl-primary);
+  border-right: 2px solid var(--cl-primary);
+  pointer-events: none;
+}
+
+.cornerBl {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--cl-primary);
+  border-left: 2px solid var(--cl-primary);
+  pointer-events: none;
+}
+
+.cornerBr {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--cl-primary);
+  border-right: 2px solid var(--cl-primary);
+  pointer-events: none;
+}
