@@ -95,10 +95,16 @@
   background: rgba(4, 10, 22, 0.4);
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
 
   &:hover {
     border-left-color: var(--cl-primary);
     background: rgba(0, 240, 255, 0.05);
+
+    .deleteBtn {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
   &.active {
@@ -117,20 +123,12 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2px;
+  padding-right: 18px;
 }
 
 .logTime {
   font-size: 10px;
   color: var(--cl-muted);
-}
-
-.activeDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--cl-primary);
-  box-shadow: 0 0 8px var(--cl-primary);
-  animation: pulse 1.5s infinite;
 }
 
 .logTitle {
@@ -140,6 +138,30 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 18px;
+}
+
+.deleteBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  visibility: hidden;
+  background: transparent;
+  border: none;
+  color: var(--cl-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: #ef4444;
+  }
 }
 
 .profile {

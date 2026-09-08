@@ -1,28 +1,57 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
 import clsx from 'clsx';
-import { Atom as AtomIcon, PlusSquare as PlusSquareIcon, Settings as SettingsIcon } from 'lucide-react';
-import { MOCK_SESSIONS, type SessionLog } from '@/entities/session';
+import {
+  Atom as AtomIcon,
+  PlusSquare as PlusSquareIcon,
+  Settings as SettingsIcon,
+  Trash2 as Trash2Icon,
+} from 'lucide-react';
+import { useChatStore } from '@/entities/chat';
+import type { SessionLog } from '@/entities/session';
 import { MOCK_USER, type UserProfile } from '@/entities/user';
 import { getInitials } from '@/shared/lib';
 import { Button, IconButton } from '@/shared/ui';
 import styles from './sidebar.module.scss';
 
+const emptySubscribe = () => () => {};
+
 export interface SidebarProps {
   sessions?: SessionLog[];
-  activeSessionId?: string;
+  activeSessionId?: string | null;
   onSelectSession?: (id: string) => void;
   onNewSession?: () => void;
+  onDeleteSession?: (id: string) => void;
   user?: UserProfile;
 }
 
 export function Sidebar({
-  sessions = MOCK_SESSIONS,
-  activeSessionId = 'log-viewer',
+  sessions,
+  activeSessionId,
   onSelectSession,
   onNewSession,
+  onDeleteSession,
   user = MOCK_USER,
 }: SidebarProps) {
+  const isMounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+
+  const storeChats = useChatStore((state) => state.chats);
+  const storeCurrentChatId = useChatStore((state) => state.currentChatId);
+  const storeSelectChat = useChatStore((state) => state.selectChat);
+  const storeOpenNewChat = useChatStore((state) => state.openNewChat);
+  const storeDeleteChat = useChatStore((state) => state.deleteChat);
+
+  const effectiveSessions = sessions ?? (isMounted ? storeChats : []);
+  const effectiveActiveId = activeSessionId !== undefined ? activeSessionId : isMounted ? storeCurrentChatId : null;
+  const handleSelect = onSelectSession ?? storeSelectChat;
+  const handleNewSession = onNewSession ?? storeOpenNewChat;
+  const handleDelete = onDeleteSession ?? storeDeleteChat;
+
   const avatarInitials = getInitials(user.name);
 
   return (
@@ -38,7 +67,7 @@ export function Sidebar({
       </div>
 
       <div className={styles.initAction}>
-        <Button fullWidth variant="cyber" icon={<PlusSquareIcon size={16} />} onClick={onNewSession}>
+        <Button fullWidth variant="cyber" icon={<PlusSquareIcon size={16} />} onClick={handleNewSession}>
           INITIALIZE NEURAL SESSION
         </Button>
       </div>
@@ -46,22 +75,33 @@ export function Sidebar({
       <div className={styles.archives}>
         <div className={styles.archivesHeader}>
           <div className={styles.archivesTitle}>Session Archives</div>
-          <div className={styles.archivesCount}>[{sessions.length} LOGS]</div>
+          <div className={styles.archivesCount}>[{effectiveSessions.length} LOGS]</div>
         </div>
 
-        {sessions.map((session) => {
-          const isActive = session.id === activeSessionId;
+        {effectiveSessions.map((session) => {
+          const isActive = session.id === effectiveActiveId;
           return (
             <div
               key={session.id}
               className={clsx(styles.logItem, isActive && styles.active)}
-              onClick={() => onSelectSession?.(session.id)}
+              onClick={() => handleSelect(session.id)}
             >
               <div className={styles.logMeta}>
                 <span className={styles.logTime}>{session.time}</span>
-                {isActive && <span className={styles.activeDot} />}
               </div>
               <div className={styles.logTitle}>{session.title}</div>
+              <button
+                type="button"
+                className={styles.deleteBtn}
+                title="Delete Session"
+                aria-label={`Delete ${session.title}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(session.id);
+                }}
+              >
+                <Trash2Icon size={12} />
+              </button>
             </div>
           );
         })}

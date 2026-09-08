@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { PatternId } from '@/entities/pattern';
 import { INITIAL_CHATS } from './mocks';
 import type { AgentDebateMessage, Chat, ChatIteration, FinalAnswer } from './types';
@@ -18,6 +19,7 @@ export interface ChatState {
   setSelectedPatternId: (patternId: PatternId) => void;
   selectChat: (chatId: string) => void;
   openNewChat: () => void;
+  deleteChat: (chatId: string) => void;
   createChat: (prompt: string, patternId?: PatternId) => string;
   addIteration: (chatId: string, userQuery: string) => string;
   updateIteration: (chatId: string, iterationId: string, patch: Partial<ChatIteration>) => void;
@@ -25,127 +27,144 @@ export interface ChatState {
   setFinalAnswer: (chatId: string, iterationId: string, answer: FinalAnswer) => void;
 }
 
-export const useChatStore = create<ChatState>((set, get) => ({
-  chats: INITIAL_CHATS,
-  currentChatId: null,
-  selectedPatternId: 'fullstack-architecture',
+export const useChatStore = create<ChatState>()(
+  persist(
+    (set, get) => ({
+      chats: INITIAL_CHATS,
+      currentChatId: null,
+      selectedPatternId: 'fullstack-architecture',
 
-  setSelectedPatternId: (patternId: PatternId) => {
-    set({ selectedPatternId: patternId });
-  },
+      setSelectedPatternId: (patternId: PatternId) => {
+        set({ selectedPatternId: patternId });
+      },
 
-  selectChat: (chatId: string) => {
-    set({ currentChatId: chatId });
-  },
+      selectChat: (chatId: string) => {
+        set({ currentChatId: chatId });
+      },
 
-  openNewChat: () => {
-    set({ currentChatId: null });
-  },
+      openNewChat: () => {
+        set({ currentChatId: null });
+      },
 
-  createChat: (prompt: string, patternId?: PatternId) => {
-    const time = getCurrentTimeString();
-    const newChatId = `chat-${Date.now()}`;
-    const newIterationId = `iter-${Date.now()}`;
-    const resolvedPattern = patternId ?? get().selectedPatternId;
+      deleteChat: (chatId: string) => {
+        set((state) => ({
+          chats: state.chats.filter((c) => c.id !== chatId),
+          currentChatId: state.currentChatId === chatId ? null : state.currentChatId,
+        }));
+      },
 
-    const firstIteration: ChatIteration = {
-      id: newIterationId,
-      userQuery: prompt,
-      timestamp: time,
-      status: 'debating',
-      debates: [],
-      debateProgress: 0,
-    };
+      createChat: (prompt: string, patternId?: PatternId) => {
+        const time = getCurrentTimeString();
+        const newChatId = `chat-${Date.now()}`;
+        const newIterationId = `iter-${Date.now()}`;
+        const resolvedPattern = patternId ?? get().selectedPatternId;
 
-    const newChat: Chat = {
-      id: newChatId,
-      title: prompt.length > 32 ? `${prompt.slice(0, 32).trim()}...` : prompt,
-      time,
-      patternId: resolvedPattern,
-      iterations: [firstIteration],
-    };
-
-    set((state) => ({
-      chats: [newChat, ...state.chats],
-      currentChatId: newChatId,
-    }));
-
-    return newChatId;
-  },
-
-  addIteration: (chatId: string, userQuery: string) => {
-    const time = getCurrentTimeString();
-    const newIterationId = `iter-${Date.now()}`;
-
-    const newIteration: ChatIteration = {
-      id: newIterationId,
-      userQuery,
-      timestamp: time,
-      status: 'debating',
-      debates: [],
-      debateProgress: 0,
-    };
-
-    set((state) => ({
-      chats: state.chats.map((chat) => {
-        if (chat.id !== chatId) return chat;
-        return {
-          ...chat,
-          iterations: [...chat.iterations, newIteration],
+        const firstIteration: ChatIteration = {
+          id: newIterationId,
+          userQuery: prompt,
+          timestamp: time,
+          status: 'debating',
+          debates: [],
+          debateProgress: 0,
         };
-      }),
-    }));
 
-    return newIterationId;
-  },
-
-  updateIteration: (chatId: string, iterationId: string, patch: Partial<ChatIteration>) => {
-    set((state) => ({
-      chats: state.chats.map((chat) => {
-        if (chat.id !== chatId) return chat;
-        return {
-          ...chat,
-          iterations: chat.iterations.map((iter) => {
-            if (iter.id !== iterationId) return iter;
-            return { ...iter, ...patch };
-          }),
+        const newChat: Chat = {
+          id: newChatId,
+          title: prompt.length > 32 ? `${prompt.slice(0, 32).trim()}...` : prompt,
+          time,
+          patternId: resolvedPattern,
+          iterations: [firstIteration],
         };
-      }),
-    }));
-  },
 
-  addDebateMessage: (chatId: string, iterationId: string, message: AgentDebateMessage) => {
-    set((state) => ({
-      chats: state.chats.map((chat) => {
-        if (chat.id !== chatId) return chat;
-        return {
-          ...chat,
-          iterations: chat.iterations.map((iter) => {
-            if (iter.id !== iterationId) return iter;
-            const debates = iter.debates ? [...iter.debates, message] : [message];
-            return { ...iter, debates };
-          }),
+        set((state) => ({
+          chats: [newChat, ...state.chats],
+          currentChatId: newChatId,
+        }));
+
+        return newChatId;
+      },
+
+      addIteration: (chatId: string, userQuery: string) => {
+        const time = getCurrentTimeString();
+        const newIterationId = `iter-${Date.now()}`;
+
+        const newIteration: ChatIteration = {
+          id: newIterationId,
+          userQuery,
+          timestamp: time,
+          status: 'debating',
+          debates: [],
+          debateProgress: 0,
         };
-      }),
-    }));
-  },
 
-  setFinalAnswer: (chatId: string, iterationId: string, answer: FinalAnswer) => {
-    set((state) => ({
-      chats: state.chats.map((chat) => {
-        if (chat.id !== chatId) return chat;
-        return {
-          ...chat,
-          iterations: chat.iterations.map((iter) => {
-            if (iter.id !== iterationId) return iter;
+        set((state) => ({
+          chats: state.chats.map((chat) => {
+            if (chat.id !== chatId) return chat;
             return {
-              ...iter,
-              status: 'completed',
-              answer,
+              ...chat,
+              iterations: [...chat.iterations, newIteration],
             };
           }),
-        };
+        }));
+
+        return newIterationId;
+      },
+
+      updateIteration: (chatId: string, iterationId: string, patch: Partial<ChatIteration>) => {
+        set((state) => ({
+          chats: state.chats.map((chat) => {
+            if (chat.id !== chatId) return chat;
+            return {
+              ...chat,
+              iterations: chat.iterations.map((iter) => {
+                if (iter.id !== iterationId) return iter;
+                return { ...iter, ...patch };
+              }),
+            };
+          }),
+        }));
+      },
+
+      addDebateMessage: (chatId: string, iterationId: string, message: AgentDebateMessage) => {
+        set((state) => ({
+          chats: state.chats.map((chat) => {
+            if (chat.id !== chatId) return chat;
+            return {
+              ...chat,
+              iterations: chat.iterations.map((iter) => {
+                if (iter.id !== iterationId) return iter;
+                const debates = iter.debates ? [...iter.debates, message] : [message];
+                return { ...iter, debates };
+              }),
+            };
+          }),
+        }));
+      },
+
+      setFinalAnswer: (chatId: string, iterationId: string, answer: FinalAnswer) => {
+        set((state) => ({
+          chats: state.chats.map((chat) => {
+            if (chat.id !== chatId) return chat;
+            return {
+              ...chat,
+              iterations: chat.iterations.map((iter) => {
+                if (iter.id !== iterationId) return iter;
+                return {
+                  ...iter,
+                  status: 'completed',
+                  answer,
+                };
+              }),
+            };
+          }),
+        }));
+      },
+    }),
+    {
+      name: 'synapse-chats-storage',
+      partialize: (state) => ({
+        chats: state.chats,
       }),
-    }));
-  },
-}));
+    }
+  )
+);
