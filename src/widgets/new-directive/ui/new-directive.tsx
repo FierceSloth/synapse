@@ -1,10 +1,10 @@
 'use client';
 
-import type { PatternId, ThinkingPattern } from '@/entities/pattern';
+import { useChatStore } from '@/entities/chat';
+import type { ThinkingPattern } from '@/entities/pattern';
 import { PatternSelector } from '@/features/pattern-selector';
 import { SwarmAgents } from '@/features/swarm-agents';
 import { SwarmInput } from '@/features/swarm-input';
-import { useState } from 'react';
 import styles from './new-directive.module.scss';
 
 export interface NewDirectiveProps {
@@ -13,16 +13,23 @@ export interface NewDirectiveProps {
 }
 
 export function NewDirective({ initialPrompt, onEngage }: NewDirectiveProps) {
-  const [selectedPatternId, setSelectedPatternId] = useState<PatternId>('fullstack-architecture');
+  const selectedPatternId = useChatStore((state) => state.selectedPatternId);
+  const setSelectedPatternId = useChatStore((state) => state.setSelectedPatternId);
+  const createChat = useChatStore((state) => state.createChat);
 
   const handleSelectPattern = (pattern: ThinkingPattern) => {
     setSelectedPatternId(pattern.id);
   };
 
+  const handleEngage = (prompt: string, options: { depth: number }) => {
+    createChat(prompt, selectedPatternId);
+    onEngage?.(prompt, options);
+  };
+
   return (
     <div className={styles.container}>
       <SwarmAgents patternId={selectedPatternId} />
-      <SwarmInput initialPrompt={initialPrompt} onEngage={onEngage} />
+      <SwarmInput initialPrompt={initialPrompt} onEngage={handleEngage} />
       <PatternSelector initialPatternId={selectedPatternId} onSelectPattern={handleSelectPattern} />
     </div>
   );
