@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { THINKING_PATTERNS, type PatternId, type ThinkingPattern } from '@/entities/pattern';
 import { LayoutGrid as LayoutGridIcon } from 'lucide-react';
-import { THINKING_PATTERNS, type ThinkingPattern } from '@/entities/pattern';
+import { useState } from 'react';
 import { PatternCard } from './pattern-card';
 import styles from './pattern-selector.module.scss';
 
 export interface PatternSelectorProps {
-  initialPatternId?: string;
+  initialPatternId?: PatternId;
   onSelectPattern?: (pattern: ThinkingPattern) => void;
 }
 
@@ -15,7 +15,7 @@ export function PatternSelector({
   initialPatternId = 'fullstack-architecture',
   onSelectPattern,
 }: PatternSelectorProps) {
-  const [activeId, setActiveId] = useState(initialPatternId);
+  const [activeId, setActiveId] = useState<PatternId>(initialPatternId);
 
   const handleSelect = (pattern: ThinkingPattern) => {
     setActiveId(pattern.id);
@@ -30,9 +30,10 @@ export function PatternSelector({
       </div>
 
       <div className={styles.grid}>
-        {THINKING_PATTERNS.map((pattern) => (
+        {THINKING_PATTERNS.map((pattern, index) => (
           <PatternCard
             key={pattern.id}
+            index={index}
             pattern={pattern}
             isActive={pattern.id === activeId}
             onSelect={() => handleSelect(pattern)}

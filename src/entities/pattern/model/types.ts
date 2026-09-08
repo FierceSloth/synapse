@@ -1,19 +1,11 @@
-export interface PatternTag {
-  label: string;
-  iconName: string;
-}
+export type PatternId = 'fullstack-architecture' | 'deep-intel' | 'venture-gtm' | 'exec-decision-council';
 
-export interface PatternFooter {
-  cores: string;
-  mode: string;
-}
+export type PatternIconName = 'terminal' | 'radar' | 'rocket' | 'scale';
 
 export interface ThinkingPattern {
-  id: string;
-  patternNumber: string;
+  id: PatternId;
   title: string;
   description: string;
-  iconName: string;
-  tags: PatternTag[];
-  footer: PatternFooter;
+  iconName: PatternIconName;
+  tags: string[];
 }
