@@ -1,0 +1,414 @@
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  position: relative;
+  user-select: none;
+}
+
+.blue {
+  --card-primary: #3b82f6;
+  --card-light: #60a5fa;
+  --card-lighter: #93c5fd;
+  --card-dark: #2563eb;
+  --card-deep: #1e3a8a;
+  --card-width: 144px;
+  --card-height: 190px;
+  --card-pedestal-border: rgba(59, 130, 246, 0.5);
+  --card-pedestal-bg: rgba(59, 130, 246, 0.05);
+  --card-pedestal-shadow: rgba(0, 136, 255, 0.25);
+  --card-pedestal-inner: rgba(59, 130, 246, 0.8);
+  --gradient-alpha: 0.2;
+
+  .cardBox {
+    animation: float 4.6s ease-in-out 0s infinite;
+  }
+}
+
+.cyan {
+  --card-primary: #22d3ee;
+  --card-light: #67e8f9;
+  --card-lighter: #67e8f9;
+  --card-dark: #0891bd;
+  --card-deep: #164e63;
+  --card-width: 144px;
+  --card-height: 220px;
+  --card-pedestal-border: rgba(34, 211, 238, 0.5);
+  --card-pedestal-bg: rgba(34, 211, 238, 0.05);
+  --card-pedestal-shadow: rgba(0, 240, 255, 0.25);
+  --card-pedestal-inner: rgba(34, 211, 238, 0.8);
+  --gradient-alpha: 0.1;
+
+  .cardBox {
+    animation: float 5.3s ease-in-out 1.5s infinite;
+  }
+}
+
+.amber {
+  --card-primary: #f59e0b;
+  --card-light: #fbbf24;
+  --card-lighter: #fbbf24;
+  --card-dark: #d97706;
+  --card-deep: #644a15;
+  --card-width: 176px;
+  --card-height: 256px;
+  --card-pedestal-border: rgba(245, 158, 11, 0.5);
+  --card-pedestal-bg: rgba(245, 158, 11, 0.1);
+  --card-pedestal-shadow: rgba(251, 191, 36, 0.35);
+  --card-pedestal-inner: #f59e0b;
+  --gradient-alpha: 0.1;
+
+  .cardBox {
+    animation: float 4.9s ease-in-out 3s infinite;
+  }
+}
+
+.indigo {
+  --card-primary: #6366f1;
+  --card-light: #818cf8;
+  --card-lighter: #a5b4fc;
+  --card-dark: #4f46e5;
+  --card-deep: #312e81;
+  --card-width: 144px;
+  --card-height: 220px;
+  --card-pedestal-border: rgba(99, 102, 241, 0.5);
+  --card-pedestal-bg: rgba(99, 102, 241, 0.05);
+  --card-pedestal-shadow: rgba(129, 140, 248, 0.25);
+  --card-pedestal-inner: rgba(99, 102, 241, 0.8);
+  --gradient-alpha: 0.1;
+
+  .cardBox {
+    animation: float 5.6s ease-in-out 0.8s infinite;
+  }
+}
+
+.purple {
+  --card-primary: #a855f7;
+  --card-light: #c084fc;
+  --card-lighter: #d8b4fe;
+  --card-dark: #9333ea;
+  --card-deep: #581c87;
+  --card-width: 144px;
+  --card-height: 190px;
+  --card-pedestal-border: rgba(168, 85, 247, 0.5);
+  --card-pedestal-bg: rgba(168, 85, 247, 0.05);
+  --card-pedestal-shadow: rgba(232, 121, 249, 0.25);
+  --card-pedestal-inner: rgba(168, 85, 247, 0.8);
+  --gradient-alpha: 0.1;
+
+  .cardBox {
+    animation: float 4.7s ease-in-out 2.2s infinite;
+  }
+}
+
+.cardBox {
+  width: var(--card-width);
+  height: var(--card-height);
+  padding: 12px;
+  position: relative;
+  background: rgba(3, 7, 18, 0.7);
+  overflow: hidden;
+  outline: 1px solid var(--card-deep);
+  outline-offset: -1px;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  will-change: transform;
+
+  &.primary {
+    padding: 20px;
+    box-shadow:
+      0 0 20px 1px rgba(0, 240, 255, 0.05) inset,
+      0 0 15px rgba(0, 240, 255, 0.2);
+    backdrop-filter: blur(12px);
+  }
+}
+
+.gradientOverlay {
+  position: absolute;
+  inset: 1px;
+  background: linear-gradient(180deg, var(--card-primary) 0%, transparent 100%);
+  opacity: var(--gradient-alpha);
+  pointer-events: none;
+}
+
+.slotNumber {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  color: var(--card-lighter);
+  font-size: 8px;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  line-height: 20px;
+
+  &.primary {
+    top: 8px;
+    right: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--card-light);
+  }
+}
+
+.corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 0 solid var(--card-light);
+  pointer-events: none;
+
+  &.primary {
+    width: 12px;
+    height: 12px;
+    border-color: #fbbf24;
+  }
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.topRight {
+  top: 0;
+  right: 0;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+.agentContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  will-change: opacity, transform, filter;
+
+  &.exiting {
+    opacity: 0;
+    transform: scale(0.92) translateY(-4px);
+    filter: blur(4px);
+    transition:
+      opacity 140ms ease-out,
+      transform 140ms ease-out,
+      filter 140ms ease-out;
+  }
+
+  &.entering {
+    animation: agentEnter 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+.iconContainer {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.2);
+  outline: 1px solid var(--card-light);
+  outline-offset: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--card-light);
+  position: relative;
+  z-index: 2;
+
+  &.primary {
+    width: 64px;
+    height: 64px;
+    outline: 2px solid var(--card-primary);
+    outline-offset: -2px;
+    color: var(--card-primary);
+  }
+}
+
+.orbitalRing {
+  position: absolute;
+  width: 78px;
+  height: 78px;
+  border-radius: 9999px;
+  border: 1px solid #fbbf24;
+  pointer-events: none;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 2;
+
+  &.primary {
+    padding-top: 8px;
+    gap: 8px;
+  }
+}
+
+.name {
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  color: var(--card-lighter);
+  text-align: center;
+  white-space: nowrap;
+
+  &.primary {
+    font-size: 11.8px;
+    letter-spacing: 1.2px;
+    color: var(--card-light);
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+  }
+}
+
+.status {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 20px;
+  color: var(--card-dark);
+  text-align: center;
+
+  &.primary {
+    font-size: 9px;
+    letter-spacing: 0.9px;
+  }
+}
+
+.pedestal {
+  position: relative;
+  width: 144px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.primary {
+    width: 176px;
+    height: 48px;
+  }
+}
+
+.outerDisc {
+  width: 112px;
+  height: 112px;
+  border-radius: 9999px;
+  border: 2px solid var(--card-pedestal-border);
+  background: var(--card-pedestal-bg);
+  box-shadow: 0 0 20px var(--card-pedestal-shadow);
+  transform: scaleY(0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &.primary {
+    width: 144px;
+    height: 144px;
+    border-width: 3px;
+    box-shadow: 0 0 30px var(--card-pedestal-shadow);
+  }
+}
+
+.innerRing {
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  border: 3px solid var(--card-pedestal-inner);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: gentlePulse 3.5s ease-in-out infinite;
+
+  &.primary {
+    width: 80px;
+    height: 80px;
+    border-width: 3px;
+  }
+}
+
+.pingRing {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border-radius: 9999px;
+  border: 1px solid var(--card-pedestal-inner);
+  animation: radarPing 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gentlePulse {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes radarPing {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  75%,
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes agentEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(4px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
