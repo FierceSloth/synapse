@@ -1,3 +1,5 @@
+@use '@/app/styles/abstract/mixins' as *;
+
 .button {
   height: 42px;
   display: inline-flex;
@@ -72,23 +74,9 @@
 }
 
 .cornerTl {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 5px;
-  border-top: 1.5px solid var(--cl-primary);
-  border-left: 1.5px solid var(--cl-primary);
-  pointer-events: none;
+  @include cyber-corner-tl(5px, 1.5px, var(--cl-primary));
 }
 
 .cornerBr {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 5px;
-  height: 5px;
-  border-bottom: 1.5px solid var(--cl-primary);
-  border-right: 1.5px solid var(--cl-primary);
-  pointer-events: none;
+  @include cyber-corner-br(5px, 1.5px, var(--cl-primary));
 }

@@ -26,3 +26,45 @@ $bp-mobile: 480px;
     @content;
   }
 }
+
+// ----------------------------------------------------
+// Cyberpunk Corner Brackets Mixins
+// ----------------------------------------------------
+@mixin cyber-corner-base($size: 12px) {
+  position: absolute;
+  width: $size;
+  height: $size;
+  pointer-events: none;
+}
+
+@mixin cyber-corner-tl($size: 12px, $border-width: 2px, $color: var(--cl-primary)) {
+  @include cyber-corner-base($size);
+  top: 0;
+  left: 0;
+  border-top: $border-width solid $color;
+  border-left: $border-width solid $color;
+}
+
+@mixin cyber-corner-tr($size: 12px, $border-width: 2px, $color: var(--cl-primary)) {
+  @include cyber-corner-base($size);
+  top: 0;
+  right: 0;
+  border-top: $border-width solid $color;
+  border-right: $border-width solid $color;
+}
+
+@mixin cyber-corner-bl($size: 12px, $border-width: 2px, $color: var(--cl-primary)) {
+  @include cyber-corner-base($size);
+  bottom: 0;
+  left: 0;
+  border-bottom: $border-width solid $color;
+  border-left: $border-width solid $color;
+}
+
+@mixin cyber-corner-br($size: 12px, $border-width: 2px, $color: var(--cl-primary)) {
+  @include cyber-corner-base($size);
+  bottom: 0;
+  right: 0;
+  border-bottom: $border-width solid $color;
+  border-right: $border-width solid $color;
+}

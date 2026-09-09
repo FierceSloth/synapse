@@ -1,3 +1,5 @@
+@use '@/app/styles/abstract/mixins' as *;
+
 .cardWrapper {
   display: flex;
   flex-direction: column;
@@ -157,11 +159,8 @@
 }
 
 .corner {
-  position: absolute;
-  width: 8px;
-  height: 8px;
+  @include cyber-corner-base(8px);
   border: 0 solid var(--card-light);
-  pointer-events: none;
 
   &.primary {
     width: 12px;
