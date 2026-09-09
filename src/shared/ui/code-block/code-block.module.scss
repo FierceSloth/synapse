@@ -1,0 +1,191 @@
+@use '@/app/styles/abstract/mixins' as *;
+
+.codeContainer {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(3, 7, 18, 0.92);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow:
+    0 0 20px 1px rgba(0, 240, 255, 0.05) inset,
+    0 0 15px rgba(0, 240, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  margin: 16px 0;
+  backdrop-filter: blur(12px);
+}
+
+.cornerTl {
+  @include cyber-corner-tl(8px, 1px, rgba(0, 240, 255, 0.6));
+}
+
+.cornerTr {
+  @include cyber-corner-tr(8px, 1px, rgba(0, 240, 255, 0.6));
+}
+
+.cornerBl {
+  @include cyber-corner-bl(8px, 1px, rgba(0, 240, 255, 0.6));
+}
+
+.cornerBr {
+  @include cyber-corner-br(8px, 1px, rgba(0, 240, 255, 0.6));
+}
+
+.header {
+  align-self: stretch;
+  padding: 8px 16px;
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, rgba(0, 240, 255, 0) 100%);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.codeIcon {
+  color: #22d3ee;
+  flex-shrink: 0;
+}
+
+.langBadge {
+  color: #a5f3fc;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(22, 78, 99, 0.5);
+  border: 1px solid rgba(14, 116, 144, 0.5);
+  border-radius: 4px;
+  color: #e0f7fa;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 240, 255, 0.2);
+    border-color: var(--cl-primary);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    color: #ffffff;
+  }
+
+  &.copied {
+    background: rgba(52, 211, 153, 0.25);
+    border-color: #34d399;
+    color: #34d399;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.3);
+  }
+}
+
+.copyIcon {
+  flex-shrink: 0;
+}
+
+.pre {
+  margin: 0;
+  padding: 16px 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: visible;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 24px;
+  background: transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(4, 10, 22, 0.8);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.25);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 240, 255, 0.5);
+    }
+  }
+
+  :global {
+    .token.keyword {
+      color: #e879f9;
+    }
+
+    .token.function,
+    .token.function-variable {
+      color: #fcd34d;
+    }
+
+    .token.string,
+    .token.attr-value {
+      color: #34d399;
+    }
+
+    .token.number {
+      color: #fbbf24;
+    }
+
+    .token.comment {
+      color: #0891b2;
+      font-style: italic;
+    }
+
+    .token.operator,
+    .token.punctuation {
+      color: rgba(34, 211, 238, 0.85);
+    }
+
+    .token.class-name,
+    .token.builtin {
+      color: #fcd34d;
+    }
+
+    .token.tag {
+      color: #818cf8;
+    }
+
+    .token.attr-name {
+      color: #a5f3fc;
+    }
+
+    .token.property {
+      color: #67e8f9;
+    }
+
+    .token.boolean {
+      color: #e879f9;
+    }
+
+    .token.variable {
+      color: #a5f3fc;
+    }
+  }
+}
+
+.code {
+  font-family: inherit;
+  font-size: inherit;
+}

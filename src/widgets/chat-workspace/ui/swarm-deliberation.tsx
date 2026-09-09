@@ -10,12 +10,14 @@ export interface SwarmDeliberationProps {
   debates?: AgentDebateMessage[];
   progress?: number;
   onInjectGuidance?: () => void;
+  onFinalizeConsensus?: () => void;
 }
 
 export function SwarmDeliberation({
   debates = MOCK_DEBATE_MESSAGES,
   progress = 78,
   onInjectGuidance,
+  onFinalizeConsensus,
 }: SwarmDeliberationProps) {
   const [isPaused, setIsPaused] = useState(false);
 
@@ -82,6 +84,11 @@ export function SwarmDeliberation({
           <button type="button" className={styles.guidanceBtn} onClick={onInjectGuidance}>
             [ INJECT HUMAN GUIDANCE ]
           </button>
+          {onFinalizeConsensus && (
+            <button type="button" className={styles.consensusBtn} onClick={onFinalizeConsensus}>
+              [ VIEW SYNTHESIZED RESULT ↵ ]
+            </button>
+          )}
         </div>
       </div>
     </div>

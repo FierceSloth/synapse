@@ -316,3 +316,32 @@
     width: 100%;
   }
 }
+
+.consensusBtn {
+  padding: 9px 18px;
+  background: rgba(0, 240, 255, 0.15);
+  border: 1px solid var(--cl-primary);
+  color: var(--cl-primary);
+  font-size: 10px;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
+    color: #ffffff;
+  }
+
+  @include media-sm {
+    width: 100%;
+  }
+}

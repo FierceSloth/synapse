@@ -7,20 +7,7 @@ export interface AgentDebateMessage {
   time: string;
 }
 
-export interface FinalAnswerPoint {
-  label: string;
-  description: string;
-}
-
-export interface FinalAnswer {
-  title: string;
-  overview: string;
-  points: FinalAnswerPoint[];
-  codeSnippet?: {
-    language: string;
-    code: string;
-  };
-}
+export type FinalAnswer = string;
 
 export type IterationStatus = 'calibration' | 'debating' | 'completed';
 

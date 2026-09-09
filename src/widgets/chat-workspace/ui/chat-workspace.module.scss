@@ -41,7 +41,7 @@
 
 .streamInner {
   width: 100%;
-  max-width: 1140px;
+  max-width: 1040px;
   padding: 36px 32px;
   display: flex;
   flex-direction: column;
@@ -58,51 +58,4 @@
   flex-direction: column;
   gap: 32px;
   width: 100%;
-}
-
-.cornerTl {
-  @include cyber-corner-tl(12px, 2px, var(--cl-primary));
-}
-
-.cornerTr {
-  @include cyber-corner-tr(12px, 2px, var(--cl-primary));
-}
-
-.cornerBl {
-  @include cyber-corner-bl(12px, 2px, var(--cl-primary));
-}
-
-.cornerBr {
-  @include cyber-corner-br(12px, 2px, var(--cl-primary));
-}
-
-.debatingPlaceholder {
-  position: relative;
-  align-self: stretch;
-  background: rgba(4, 10, 22, 0.85);
-  box-shadow:
-    0 0 20px 1px rgba(0, 240, 255, 0.05) inset,
-    0 0 15px rgba(0, 240, 255, 0.2);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  backdrop-filter: blur(12px);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  animation: fadeIn 0.3s ease;
-}
-
-.debatingTitle {
-  color: var(--cl-primary);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
-}
-
-.debatingSubtitle {
-  color: var(--cl-muted);
-  font-size: 11px;
 }

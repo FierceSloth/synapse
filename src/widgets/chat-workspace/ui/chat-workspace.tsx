@@ -1,10 +1,11 @@
 'use client';
 
-import { useChatStore, type Chat, type ClarificationAnswers } from '@/entities/chat';
+import { MOCK_FINAL_ANSWER, useChatStore, type Chat, type ClarificationAnswers } from '@/entities/chat';
 import { useEffect, useRef } from 'react';
 import { ChatInputDock } from './chat-input-dock';
 import styles from './chat-workspace.module.scss';
 import { SpecificationCalibration } from './specification-calibration';
+import { SwarmConsensus } from './swarm-consensus';
 import { SwarmDeliberation } from './swarm-deliberation';
 import { UserMessage } from './user-message';
 
@@ -39,6 +40,15 @@ export function ChatWorkspace({ chat }: ChatWorkspaceProps) {
     });
   };
 
+  const handleCompleteDeliberation = (iterationId: string) => {
+    const currentIter = chat.iterations.find((it) => it.id === iterationId);
+    updateIteration(chat.id, iterationId, {
+      status: 'completed',
+      debateProgress: 100,
+      answer: currentIter?.answer || MOCK_FINAL_ANSWER,
+    });
+  };
+
   const handleInjectGuidance = () => {
     dockInputRef.current?.focus();
   };
@@ -68,19 +78,11 @@ export function ChatWorkspace({ chat }: ChatWorkspaceProps) {
                   debates={iteration.debates && iteration.debates.length > 0 ? iteration.debates : undefined}
                   progress={iteration.debateProgress ?? 78}
                   onInjectGuidance={handleInjectGuidance}
+                  onFinalizeConsensus={() => handleCompleteDeliberation(iteration.id)}
                 />
               )}
 
-              {iteration.status === 'completed' && iteration.answer && (
-                <div className={styles.debatingPlaceholder}>
-                  <div className={styles.cornerTl} />
-                  <div className={styles.cornerTr} />
-                  <div className={styles.cornerBl} />
-                  <div className={styles.cornerBr} />
-                  <div className={styles.debatingTitle}>[ CONSENSUS REACHED: {iteration.answer.title} ]</div>
-                  <div className={styles.debatingSubtitle}>{iteration.answer.overview}</div>
-                </div>
-              )}
+              {iteration.status === 'completed' && iteration.answer && <SwarmConsensus answer={iteration.answer} />}
             </div>
           ))}
         </div>
