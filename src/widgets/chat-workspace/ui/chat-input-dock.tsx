@@ -10,12 +10,14 @@ export interface ChatInputDockProps {
   onSubmit: (text: string) => void;
   onCancel?: () => void;
   placeholder?: string;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 }
 
 export function ChatInputDock({
   onSubmit,
   onCancel,
   placeholder = 'Ask a follow-up, challenge an agent, or request changes...',
+  inputRef,
 }: ChatInputDockProps) {
   const [value, setValue] = useState('');
 
@@ -53,6 +55,7 @@ export function ChatInputDock({
           </div>
 
           <input
+            ref={inputRef}
             type="text"
             className={styles.dockInput}
             value={value}

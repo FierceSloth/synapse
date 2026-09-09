@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { ChatInputDock } from './chat-input-dock';
 import styles from './chat-workspace.module.scss';
 import { SpecificationCalibration } from './specification-calibration';
+import { SwarmDeliberation } from './swarm-deliberation';
 import { UserMessage } from './user-message';
 
 export interface ChatWorkspaceProps {
@@ -13,6 +14,7 @@ export interface ChatWorkspaceProps {
 
 export function ChatWorkspace({ chat }: ChatWorkspaceProps) {
   const streamRef = useRef<HTMLDivElement>(null);
+  const dockInputRef = useRef<HTMLInputElement>(null);
   const updateIteration = useChatStore((state) => state.updateIteration);
   const addIteration = useChatStore((state) => state.addIteration);
 
@@ -33,8 +35,12 @@ export function ChatWorkspace({ chat }: ChatWorkspaceProps) {
     updateIteration(chat.id, iterationId, {
       answers,
       status: 'debating',
-      debateProgress: 0,
+      debateProgress: 78,
     });
+  };
+
+  const handleInjectGuidance = () => {
+    dockInputRef.current?.focus();
   };
 
   const handleNewQuery = (text: string) => {
@@ -58,16 +64,11 @@ export function ChatWorkspace({ chat }: ChatWorkspaceProps) {
               )}
 
               {iteration.status === 'debating' && (
-                <div className={styles.debatingPlaceholder}>
-                  <div className={styles.cornerTl} />
-                  <div className={styles.cornerTr} />
-                  <div className={styles.cornerBl} />
-                  <div className={styles.cornerBr} />
-                  <div className={styles.debatingTitle}>[ #2 SWARM DELIBERATION // 5-AGENT ADVERSARIAL MATRIX ]</div>
-                  <div className={styles.debatingSubtitle}>
-                    Deliberation pipeline configured. Agents debate sequence ready for Screen 03 integration.
-                  </div>
-                </div>
+                <SwarmDeliberation
+                  debates={iteration.debates && iteration.debates.length > 0 ? iteration.debates : undefined}
+                  progress={iteration.debateProgress ?? 78}
+                  onInjectGuidance={handleInjectGuidance}
+                />
               )}
 
               {iteration.status === 'completed' && iteration.answer && (
@@ -85,7 +86,7 @@ export function ChatWorkspace({ chat }: ChatWorkspaceProps) {
         </div>
       </div>
 
-      <ChatInputDock onSubmit={handleNewQuery} />
+      <ChatInputDock onSubmit={handleNewQuery} inputRef={dockInputRef} />
     </div>
   );
 }
