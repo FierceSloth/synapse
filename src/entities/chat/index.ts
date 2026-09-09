@@ -3,6 +3,8 @@ export {
   type FinalAnswer,
   type FinalAnswerPoint,
   type IterationStatus,
+  type ClarificationQuestion,
+  type ClarificationAnswers,
   type ChatIteration,
   type Chat,
 } from './model/types';

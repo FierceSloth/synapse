@@ -11,8 +11,8 @@ export const INITIAL_CHATS: Chat[] = [
         id: 'iter-1',
         userQuery:
           'I need a virtualized log-viewer component for our monitoring dashboard. It has to handle up to 50,000 live streaming rows without freezing the tab, support regex search filtering, and include an auto-scroll toggle that pauses whenever the user manually scrolls up. Generate the complete component with tests.',
-        timestamp: '04:11:53',
-        status: 'completed',
+        timestamp: '04:12:08',
+        status: 'calibration',
         answer: {
           title: 'Production-Ready Virtualized Log Viewer',
           overview:

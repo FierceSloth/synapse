@@ -24,11 +24,22 @@ export interface FinalAnswer {
 
 export type IterationStatus = 'calibration' | 'debating' | 'completed';
 
+export interface ClarificationQuestion {
+  id: string;
+  title: string;
+  options: string[];
+  defaultOption?: string;
+}
+
+export type ClarificationAnswers = Record<string, string>;
+
 export interface ChatIteration {
   id: string;
   userQuery: string;
   timestamp: string;
   status: IterationStatus;
+  questions?: ClarificationQuestion[];
+  answers?: ClarificationAnswers;
   debates?: AgentDebateMessage[];
   debateProgress?: number;
   answer?: FinalAnswer;

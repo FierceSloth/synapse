@@ -63,7 +63,7 @@ export const useChatStore = create<ChatState>()(
           id: newIterationId,
           userQuery: prompt,
           timestamp: time,
-          status: 'debating',
+          status: 'calibration',
           debates: [],
           debateProgress: 0,
         };
@@ -92,7 +92,7 @@ export const useChatStore = create<ChatState>()(
           id: newIterationId,
           userQuery,
           timestamp: time,
-          status: 'debating',
+          status: 'calibration',
           debates: [],
           debateProgress: 0,
         };
