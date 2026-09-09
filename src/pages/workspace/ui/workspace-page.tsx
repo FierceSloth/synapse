@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { useChatStore } from '@/entities/chat';
 import { ChatWorkspace } from '@/widgets/chat-workspace';
 import { Header } from '@/widgets/header';
@@ -17,7 +18,7 @@ export function WorkspacePage() {
 
       <main className={styles.main}>
         <Header currentLabel={currentChat ? currentChat.title : 'NEW_DIRECTIVE'} />
-        <div className={styles.content}>
+        <div className={clsx(styles.content, currentChat && styles.chatContent)}>
           {currentChatId && currentChat ? <ChatWorkspace chat={currentChat} /> : <NewDirective />}
         </div>
       </main>

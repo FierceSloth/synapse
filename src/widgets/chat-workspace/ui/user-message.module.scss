@@ -1,0 +1,83 @@
+@use '@/app/styles/abstract/mixins' as *;
+
+.userMessageRow {
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 12px;
+  animation: fadeIn 0.3s ease-out;
+  font-family: var(--font-mono);
+}
+
+.userMessageContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  max-width: calc(100% - 60px);
+}
+
+.userMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.userTime {
+  color: var(--cl-muted);
+  font-size: 10px;
+  line-height: 20px;
+}
+
+.userName {
+  color: var(--cl-primary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.userBubble {
+  max-width: 560px;
+  padding: 14px 16px;
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: var(--cl-highlight);
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: break-word;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.08);
+
+  @include media-sm {
+    font-size: 13px;
+    padding: 12px;
+  }
+}
+
+.userAvatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cl-primary);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

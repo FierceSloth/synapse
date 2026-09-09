@@ -27,9 +27,6 @@ $bp-mobile: 480px;
   }
 }
 
-// ----------------------------------------------------
-// Cyberpunk Corner Brackets Mixins
-// ----------------------------------------------------
 @mixin cyber-corner-base($size: 12px) {
   position: absolute;
   width: $size;
