@@ -1,6 +1,7 @@
 @use './abstract/constants';
 @use './abstract/mixins';
 @use './base/base';
+@use './base/animations';
 
 body {
   min-height: 100dvh;
