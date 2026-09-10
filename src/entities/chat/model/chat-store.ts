@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { PatternId } from '@/entities/pattern';
-import { INITIAL_CHATS } from './mocks';
 import type { AgentDebateMessage, Chat, ChatIteration, FinalAnswer } from './types';
 
 function getCurrentTimeString(): string {
@@ -14,28 +13,42 @@ function getCurrentTimeString(): string {
 export interface ChatState {
   chats: Chat[];
   currentChatId: string | null;
+  draftPrompt: string;
   selectedPatternId: PatternId;
 
   setSelectedPatternId: (patternId: PatternId) => void;
+  setDraftPrompt: (prompt: string) => void;
   selectChat: (chatId: string) => void;
   openNewChat: () => void;
   deleteChat: (chatId: string) => void;
-  createChat: (prompt: string, patternId?: PatternId) => string;
-  addIteration: (chatId: string, userQuery: string) => string;
+  cancelActiveIteration: (chatId: string) => string;
+  createChat: (prompt: string, patternId?: PatternId, depth?: number) => string;
+  addIteration: (chatId: string, userQuery: string, depth?: number) => string;
   updateIteration: (chatId: string, iterationId: string, patch: Partial<ChatIteration>) => void;
   addDebateMessage: (chatId: string, iterationId: string, message: AgentDebateMessage) => void;
+  setActiveSpeaker: (
+    chatId: string,
+    iterationId: string,
+    speaker: { slotIndex: number; agentName: string; stageName?: string } | null
+  ) => void;
+  injectHumanGuidance: (chatId: string, iterationId: string, text: string) => void;
   setFinalAnswer: (chatId: string, iterationId: string, answer: FinalAnswer) => void;
 }
 
 export const useChatStore = create<ChatState>()(
   persist(
     (set, get) => ({
-      chats: INITIAL_CHATS,
+      chats: [],
       currentChatId: null,
+      draftPrompt: '',
       selectedPatternId: 'fullstack-architecture',
 
       setSelectedPatternId: (patternId: PatternId) => {
         set({ selectedPatternId: patternId });
+      },
+
+      setDraftPrompt: (prompt: string) => {
+        set({ draftPrompt: prompt });
       },
 
       selectChat: (chatId: string) => {
@@ -43,7 +56,7 @@ export const useChatStore = create<ChatState>()(
       },
 
       openNewChat: () => {
-        set({ currentChatId: null });
+        set({ currentChatId: null, draftPrompt: '' });
       },
 
       deleteChat: (chatId: string) => {
@@ -53,7 +66,38 @@ export const useChatStore = create<ChatState>()(
         }));
       },
 
-      createChat: (prompt: string, patternId?: PatternId) => {
+      cancelActiveIteration: (chatId: string) => {
+        const state = get();
+        const chat = state.chats.find((c) => c.id === chatId);
+        if (!chat) return '';
+
+        const iterations = chat.iterations;
+        const lastIteration = iterations[iterations.length - 1];
+        const cancelledPrompt = lastIteration?.userQuery || '';
+
+        if (iterations.length <= 1) {
+          set({
+            chats: state.chats.filter((c) => c.id !== chatId),
+            currentChatId: null,
+            draftPrompt: cancelledPrompt,
+          });
+        } else {
+          set({
+            chats: state.chats.map((c) => {
+              if (c.id !== chatId) return c;
+              return {
+                ...c,
+                iterations: c.iterations.slice(0, -1),
+              };
+            }),
+            draftPrompt: cancelledPrompt,
+          });
+        }
+
+        return cancelledPrompt;
+      },
+
+      createChat: (prompt: string, patternId?: PatternId, depth = 5) => {
         const time = getCurrentTimeString();
         const newChatId = `chat-${Date.now()}`;
         const newIterationId = `iter-${Date.now()}`;
@@ -64,6 +108,7 @@ export const useChatStore = create<ChatState>()(
           userQuery: prompt,
           timestamp: time,
           status: 'calibration',
+          depth,
           debates: [],
           debateProgress: 0,
         };
@@ -79,12 +124,13 @@ export const useChatStore = create<ChatState>()(
         set((state) => ({
           chats: [newChat, ...state.chats],
           currentChatId: newChatId,
+          draftPrompt: '',
         }));
 
         return newChatId;
       },
 
-      addIteration: (chatId: string, userQuery: string) => {
+      addIteration: (chatId: string, userQuery: string, depth = 5) => {
         const time = getCurrentTimeString();
         const newIterationId = `iter-${Date.now()}`;
 
@@ -93,6 +139,7 @@ export const useChatStore = create<ChatState>()(
           userQuery,
           timestamp: time,
           status: 'calibration',
+          depth,
           debates: [],
           debateProgress: 0,
         };
@@ -135,6 +182,61 @@ export const useChatStore = create<ChatState>()(
                 if (iter.id !== iterationId) return iter;
                 const debates = iter.debates ? [...iter.debates, message] : [message];
                 return { ...iter, debates };
+              }),
+            };
+          }),
+        }));
+      },
+
+      setActiveSpeaker: (
+        chatId: string,
+        iterationId: string,
+        speaker: { slotIndex: number; agentName: string; stageName?: string } | null
+      ) => {
+        set((state) => ({
+          chats: state.chats.map((chat) => {
+            if (chat.id !== chatId) return chat;
+            return {
+              ...chat,
+              iterations: chat.iterations.map((iter) => {
+                if (iter.id !== iterationId) return iter;
+                if (
+                  iter.activeSpeaker?.slotIndex === speaker?.slotIndex &&
+                  iter.activeSpeaker?.agentName === speaker?.agentName &&
+                  iter.activeSpeaker?.stageName === speaker?.stageName
+                ) {
+                  return iter;
+                }
+                return { ...iter, activeSpeaker: speaker };
+              }),
+            };
+          }),
+        }));
+      },
+
+      injectHumanGuidance: (chatId: string, iterationId: string, text: string) => {
+        const time = getCurrentTimeString();
+        const humanMessage: AgentDebateMessage = {
+          slotIndex: 0,
+          agentName: 'HUMAN OPERATOR',
+          text: `"${text}"`,
+          time,
+          isHuman: true,
+        };
+
+        set((state) => ({
+          chats: state.chats.map((chat) => {
+            if (chat.id !== chatId) return chat;
+            return {
+              ...chat,
+              iterations: chat.iterations.map((iter) => {
+                if (iter.id !== iterationId) return iter;
+                const debates = iter.debates ? [...iter.debates, humanMessage] : [humanMessage];
+                return {
+                  ...iter,
+                  debates,
+                  humanGuidance: text,
+                };
               }),
             };
           }),

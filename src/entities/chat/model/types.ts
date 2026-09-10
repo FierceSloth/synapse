@@ -5,6 +5,8 @@ export interface AgentDebateMessage {
   agentName: string;
   text: string;
   time: string;
+  stageName?: string;
+  isHuman?: boolean;
 }
 
 export type FinalAnswer = string;
@@ -25,11 +27,15 @@ export interface ChatIteration {
   userQuery: string;
   timestamp: string;
   status: IterationStatus;
+  depth?: number;
   questions?: ClarificationQuestion[];
   answers?: ClarificationAnswers;
   debates?: AgentDebateMessage[];
   debateProgress?: number;
   answer?: FinalAnswer;
+  activeSpeaker?: { slotIndex: number; agentName: string; stageName?: string } | null;
+  isSynthesizing?: boolean;
+  humanGuidance?: string;
 }
 
 export interface Chat {
