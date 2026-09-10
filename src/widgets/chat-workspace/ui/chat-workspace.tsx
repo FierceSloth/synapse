@@ -1,7 +1,9 @@
 'use client';
 
 import { useChatStore, type Chat, type ChatIteration, type ClarificationAnswers } from '@/entities/chat';
+import { useSettingsStore } from '@/entities/settings';
 import { useSwarmOrchestrator } from '@/features/swarm-orchestrator';
+import { getInitials } from '@/shared/lib';
 import { useEffect, useRef, useState } from 'react';
 import { ChatInputDock } from './chat-input-dock';
 import styles from './chat-workspace.module.scss';
@@ -22,6 +24,8 @@ interface IterationItemProps {
 
 function IterationItem({ chat, iteration: initialIteration, isLast }: IterationItemProps) {
   const updateIteration = useChatStore((state) => state.updateIteration);
+  const userName = useSettingsStore((state) => state.name);
+  const userInitials = getInitials(userName);
 
   const iteration = useChatStore((state) => {
     const liveChat = state.chats.find((c) => c.id === chat.id);
@@ -45,7 +49,12 @@ function IterationItem({ chat, iteration: initialIteration, isLast }: IterationI
 
   return (
     <div className={styles.iterationGroup}>
-      <UserMessage query={iteration.userQuery} timestamp={iteration.timestamp} />
+      <UserMessage
+        query={iteration.userQuery}
+        timestamp={iteration.timestamp}
+        userName={userName}
+        userInitials={userInitials}
+      />
 
       {iteration.status === 'calibration' && (
         <SpecificationCalibration

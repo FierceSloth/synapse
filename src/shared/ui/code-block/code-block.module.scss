@@ -42,6 +42,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+
+  @include media-sm {
+    padding: 6px 12px;
+  }
 }
 
 .headerLeft {
@@ -110,6 +114,12 @@
   font-size: 13px;
   line-height: 24px;
   background: transparent;
+
+  @include media-sm {
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 20px;
+  }
 
   &::-webkit-scrollbar {
     width: 6px;

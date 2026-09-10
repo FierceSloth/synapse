@@ -1,3 +1,5 @@
+@use '@/app/styles/abstract/mixins' as *;
+
 .header {
   height: 56px;
   flex-shrink: 0;
@@ -9,7 +11,33 @@
   justify-content: space-between;
   padding: 0 24px;
   position: relative;
-  z-index: var(--z-base);
+  z-index: var(--z-header);
+
+  @include media-md {
+    padding: 0 16px;
+  }
+
+  @include media-xs {
+    padding: 0 12px;
+  }
+}
+
+.leftNav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.burgerBtn {
+  display: none;
+  flex-shrink: 0;
+  color: var(--cl-primary);
+
+  @include media-md {
+    display: inline-flex;
+  }
 }
 
 .breadcrumbs {
@@ -21,6 +49,13 @@
   font-family: var(--font-mono);
   color: var(--cl-muted);
   user-select: none;
+  min-width: 0;
+  overflow: hidden;
+
+  @include media-xs {
+    gap: 6px;
+    font-size: 10px;
+  }
 }
 
 .folderIcon {
@@ -32,10 +67,19 @@
 .crumbLink {
   color: var(--cl-muted);
   transition: all 0.2s ease;
+  white-space: nowrap;
+
+  @include media-xs {
+    display: none;
+  }
 }
 
 .separator {
   color: var(--cl-muted);
+
+  @include media-xs {
+    display: none;
+  }
 }
 
 .currentCrumb {
@@ -43,6 +87,9 @@
   font-weight: 700;
   text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
   letter-spacing: 0.16em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .telemetry {

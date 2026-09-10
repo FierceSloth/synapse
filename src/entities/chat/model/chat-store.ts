@@ -15,9 +15,12 @@ export interface ChatState {
   currentChatId: string | null;
   draftPrompt: string;
   selectedPatternId: PatternId;
+  isMobileSidebarOpen: boolean;
 
   setSelectedPatternId: (patternId: PatternId) => void;
   setDraftPrompt: (prompt: string) => void;
+  setMobileSidebarOpen: (open: boolean) => void;
+  toggleMobileSidebar: () => void;
   selectChat: (chatId: string) => void;
   openNewChat: () => void;
   deleteChat: (chatId: string) => void;
@@ -42,6 +45,7 @@ export const useChatStore = create<ChatState>()(
       currentChatId: null,
       draftPrompt: '',
       selectedPatternId: 'fullstack-architecture',
+      isMobileSidebarOpen: false,
 
       setSelectedPatternId: (patternId: PatternId) => {
         set({ selectedPatternId: patternId });
@@ -51,12 +55,20 @@ export const useChatStore = create<ChatState>()(
         set({ draftPrompt: prompt });
       },
 
+      setMobileSidebarOpen: (open: boolean) => {
+        set({ isMobileSidebarOpen: open });
+      },
+
+      toggleMobileSidebar: () => {
+        set((state) => ({ isMobileSidebarOpen: !state.isMobileSidebarOpen }));
+      },
+
       selectChat: (chatId: string) => {
-        set({ currentChatId: chatId });
+        set({ currentChatId: chatId, isMobileSidebarOpen: false });
       },
 
       openNewChat: () => {
-        set({ currentChatId: null, draftPrompt: '' });
+        set({ currentChatId: null, draftPrompt: '', isMobileSidebarOpen: false });
       },
 
       deleteChat: (chatId: string) => {
@@ -125,6 +137,7 @@ export const useChatStore = create<ChatState>()(
           chats: [newChat, ...state.chats],
           currentChatId: newChatId,
           draftPrompt: '',
+          isMobileSidebarOpen: false,
         }));
 
         return newChatId;

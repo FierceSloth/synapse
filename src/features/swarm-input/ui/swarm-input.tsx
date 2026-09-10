@@ -137,7 +137,7 @@ export function SwarmInput({ initialPrompt = '', onEngage }: SwarmInputProps) {
           </div>
         </div>
 
-        <Button variant="cyber" onClick={handleEngageClick}>
+        <Button variant="cyber" className={styles.engageBtn} onClick={handleEngageClick}>
           [ ENGAGE SWARM CLUSTER ↵ ]
         </Button>
       </div>

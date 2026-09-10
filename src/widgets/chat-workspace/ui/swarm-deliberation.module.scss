@@ -540,18 +540,24 @@
   inset: 0;
   background: rgba(2, 6, 23, 0.85);
   backdrop-filter: blur(8px);
-  z-index: 20;
+  z-index: var(--z-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   animation: fadeIn 0.25s ease-out;
+
+  @include media-sm {
+    padding: 12px;
+  }
 }
 
 .guidanceModal {
   position: relative;
   width: 100%;
   max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
   background: rgba(4, 12, 28, 0.95);
   border: 1px solid #f59e0b;
   box-shadow:
@@ -679,6 +685,13 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+
+  @include media-xs {
+    flex-direction: column;
+    button {
+      width: 100%;
+    }
+  }
 }
 
 .guidanceCancelBtn {

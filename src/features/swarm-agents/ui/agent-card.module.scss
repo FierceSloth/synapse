@@ -8,6 +8,8 @@
   gap: 15px;
   position: relative;
   user-select: none;
+  flex-shrink: 0;
+  scroll-snap-align: center;
 }
 
 .blue {
@@ -205,7 +207,7 @@
   gap: 12px;
   width: 100%;
   position: relative;
-  z-index: 2;
+  z-index: var(--z-elevated);
   will-change: opacity, transform, filter;
 
   &.exiting {
@@ -235,7 +237,7 @@
   justify-content: center;
   color: var(--card-light);
   position: relative;
-  z-index: 2;
+  z-index: var(--z-elevated);
 
   &.primary {
     width: 64px;
@@ -260,7 +262,7 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  z-index: 2;
+  z-index: var(--z-elevated);
 
   &.primary {
     padding-top: 8px;

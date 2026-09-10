@@ -40,6 +40,11 @@
     0 0 15px rgba(0, 240, 255, 0.2),
     0 0 30px rgba(0, 240, 255, 0.05);
   backdrop-filter: blur(6px);
+
+  @include media-xs {
+    gap: 8px;
+    padding: 5px 12px 5px 8px;
+  }
 }
 
 .checkIconCircle {
@@ -66,6 +71,11 @@
   letter-spacing: 1.1px;
   text-transform: uppercase;
   text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+
+  @include media-xs {
+    font-size: 9px;
+    letter-spacing: 0.6px;
+  }
 }
 
 .contentBody {

@@ -199,6 +199,11 @@
   border-radius: 1px;
   font-family: inherit;
 
+  @include media-sm {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
   &:hover:not(.chipActive):not(:disabled) {
     background: rgba(0, 240, 255, 0.08);
     border-color: rgba(0, 240, 255, 0.4);
@@ -226,6 +231,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @include media-sm {
+    padding: 10px 12px;
+  }
 }
 
 .confirmBtn {
@@ -247,6 +256,12 @@
   align-items: center;
   justify-content: center;
   font-family: inherit;
+
+  @include media-sm {
+    padding: 10px 14px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
 
   &:hover:not(:disabled) {
     background: rgba(0, 240, 255, 0.3);

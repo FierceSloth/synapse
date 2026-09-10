@@ -1,3 +1,5 @@
+@use '@/app/styles/abstract/mixins' as *;
+
 .sidebar {
   width: 290px;
   flex-shrink: 0;
@@ -9,6 +11,33 @@
   flex-direction: column;
   position: relative;
   z-index: var(--z-base);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @include media-md {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(300px, 85vw);
+    z-index: var(--z-modal);
+    transform: translateX(-100%);
+    visibility: hidden;
+    pointer-events: none;
+    background-color: rgba(4, 10, 22, 0.96);
+    box-shadow: none;
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0.3s ease;
+
+    &.open {
+      transform: translateX(0);
+      visibility: visible;
+      pointer-events: auto;
+      box-shadow:
+        0 0 35px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(0, 240, 255, 0.25);
+    }
+  }
 }
 
 .brand {
@@ -19,6 +48,27 @@
   justify-content: space-between;
   padding: 0 20px;
   background: linear-gradient(90deg, rgba(0, 240, 255, 0.08) 0%, transparent 100%);
+}
+
+.closeMobileBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--cl-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--cl-primary);
+  }
+
+  @include media-md {
+    display: flex;
+  }
 }
 
 .brandInfo {

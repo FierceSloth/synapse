@@ -7,9 +7,11 @@ import {
   PlusSquare as PlusSquareIcon,
   Settings as SettingsIcon,
   Trash2 as Trash2Icon,
+  X as CloseIcon,
 } from 'lucide-react';
 import { useChatStore } from '@/entities/chat';
 import type { SessionLog } from '@/entities/session';
+import { useSettingsStore } from '@/entities/settings';
 import { DEFAULT_USER, type UserProfile } from '@/entities/user';
 import { getInitials } from '@/shared/lib';
 import { Button, IconButton } from '@/shared/ui';
@@ -45,6 +47,12 @@ export function Sidebar({
   const storeSelectChat = useChatStore((state) => state.selectChat);
   const storeOpenNewChat = useChatStore((state) => state.openNewChat);
   const storeDeleteChat = useChatStore((state) => state.deleteChat);
+  const isMobileSidebarOpen = useChatStore((state) => state.isMobileSidebarOpen);
+  const setMobileSidebarOpen = useChatStore((state) => state.setMobileSidebarOpen);
+
+  const settingsName = useSettingsStore((state) => state.name);
+  const settingsRole = useSettingsStore((state) => state.role);
+  const openSettings = useSettingsStore((state) => state.openSettings);
 
   const effectiveSessions = sessions ?? (isMounted ? storeChats : []);
   const effectiveActiveId = activeSessionId !== undefined ? activeSessionId : isMounted ? storeCurrentChatId : null;
@@ -52,10 +60,14 @@ export function Sidebar({
   const handleNewSession = onNewSession ?? storeOpenNewChat;
   const handleDelete = onDeleteSession ?? storeDeleteChat;
 
-  const avatarInitials = getInitials(user.name);
+  const effectiveUserName =
+    user?.name && user.name !== DEFAULT_USER.name ? user.name : isMounted ? settingsName : DEFAULT_USER.name;
+  const effectiveUserRole =
+    user?.role && user.role !== DEFAULT_USER.role ? user.role : isMounted ? settingsRole : DEFAULT_USER.role;
+  const avatarInitials = getInitials(effectiveUserName);
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={clsx(styles.sidebar, isMobileSidebarOpen && styles.open)}>
       <div className={styles.brand}>
         <div className={styles.brandInfo}>
           <AtomIcon className={styles.logoIcon} size={26} />
@@ -64,6 +76,15 @@ export function Sidebar({
             <div className={styles.subtitle}>Quantum Orchestration</div>
           </div>
         </div>
+        <button
+          type="button"
+          className={styles.closeMobileBtn}
+          onClick={() => setMobileSidebarOpen(false)}
+          title="Close Navigation Menu"
+          aria-label="Close Navigation Menu"
+        >
+          <CloseIcon size={18} />
+        </button>
       </div>
 
       <div className={styles.initAction}>
@@ -110,10 +131,15 @@ export function Sidebar({
       <div className={styles.profile}>
         <div className={styles.avatar}>{avatarInitials}</div>
         <div className={styles.userInfo}>
-          <div className={styles.userName}>{user.name}</div>
-          <div className={styles.userRole}>{user.role}</div>
+          <div className={styles.userName}>{effectiveUserName}</div>
+          <div className={styles.userRole}>{effectiveUserRole}</div>
         </div>
-        <IconButton icon={<SettingsIcon size={16} />} title="System Settings" aria-label="System Settings" />
+        <IconButton
+          icon={<SettingsIcon size={16} />}
+          title="System Settings"
+          aria-label="System Settings"
+          onClick={openSettings}
+        />
       </div>
     </aside>
   );

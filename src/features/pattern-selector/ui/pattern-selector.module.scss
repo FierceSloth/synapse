@@ -1,3 +1,5 @@
+@use '@/app/styles/abstract/mixins' as *;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -23,10 +25,16 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  @include media-lg {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  @include media-sm {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 12px;
   }
 }

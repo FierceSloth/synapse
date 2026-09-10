@@ -26,7 +26,14 @@
   --hud-grid-color: rgba(0, 240, 255, 0.05);
 
   --z-bg: 0;
-  --z-base: 10;
-  --z-overlay: 50;
-  --z-floating: 100;
+  --z-base: 1;
+  --z-elevated: 2;
+  --z-header: 100;
+  --z-dock: 150;
+  --z-floating: 200;
+  --z-backdrop: 900;
+  --z-overlay: 950;
+  --z-modal: 1000;
+  --z-popover: 1100;
+  --z-toast: 1200;
 }

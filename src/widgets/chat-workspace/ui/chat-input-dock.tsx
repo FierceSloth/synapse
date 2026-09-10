@@ -1,7 +1,8 @@
 'use client';
 
 import { Button } from '@shared/ui';
-import { Terminal as TerminalIcon } from 'lucide-react';
+import clsx from 'clsx';
+import { ArrowUp, Square, Terminal as TerminalIcon } from 'lucide-react';
 import { useState, type KeyboardEvent } from 'react';
 import styles from './chat-input-dock.module.scss';
 
@@ -72,15 +73,31 @@ export function ChatInputDock({
           {isActionActive ? (
             <Button
               variant="cyber"
-              className={styles.dockActionBtn}
+              withCorners={false}
+              className={clsx(styles.dockActionBtn, styles.cancelBtn)}
               onClick={handleCancelClick}
               title="Cancel active deliberation and write a new prompt"
+              aria-label="Cancel active deliberation"
             >
-              [ CANCEL ]
+              <span className={styles.btnText}>[ CANCEL ]</span>
+              <span className={styles.btnIcon}>
+                <Square size={13} fill="currentColor" />
+              </span>
             </Button>
           ) : (
-            <Button variant="cyber" className={styles.dockActionBtn} disabled={!hasText} onClick={handleSubmit}>
-              [ SEND ↵ ]
+            <Button
+              variant="cyber"
+              withCorners={false}
+              className={clsx(styles.dockActionBtn, styles.sendBtn)}
+              disabled={!hasText}
+              onClick={handleSubmit}
+              title="Send directive"
+              aria-label="Send directive"
+            >
+              <span className={styles.btnText}>[ SEND ↵ ]</span>
+              <span className={styles.btnIcon}>
+                <ArrowUp size={16} strokeWidth={2.6} />
+              </span>
             </Button>
           )}
         </div>

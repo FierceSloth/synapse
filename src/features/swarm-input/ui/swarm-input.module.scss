@@ -67,8 +67,10 @@
   font-size: 13.5px;
   line-height: 1.65;
   letter-spacing: 0.02em;
-  resize: none;
-  outline: none;
+  @include media-sm {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -97,12 +99,39 @@
   background: var(--bg-surface-1);
   flex-wrap: wrap;
   gap: 12px;
+
+  @include media-sm {
+    padding: 10px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
 }
 
 .leftControls {
   display: flex;
   align-items: center;
   gap: 16px;
+
+  @include media-sm {
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  @include media-xs {
+    .divider {
+      display: none;
+    }
+  }
+}
+
+.engageBtn {
+  @include media-sm {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .attachBtn {
