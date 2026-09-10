@@ -44,11 +44,18 @@ export async function POST(req: Request) {
 
     const { systemInstruction, prompt: userPrompt } = buildCalibrationPrompt(prompt, patternId as PatternId);
 
-    const rawResponse = await callGemini([{ role: 'user', parts: [{ text: userPrompt }] }], {
-      systemInstruction,
-      temperature: 0.2,
-      responseMimeType: 'application/json',
-    });
+    const headerKey = req.headers.get('x-gemini-api-key');
+    const customApiKey = (headerKey || (body as { apiKey?: string }).apiKey || '').trim() || undefined;
+
+    const rawResponse = await callGemini(
+      [{ role: 'user', parts: [{ text: userPrompt }] }],
+      {
+        systemInstruction,
+        temperature: 0.2,
+        responseMimeType: 'application/json',
+      },
+      customApiKey
+    );
 
     const cleaned = rawResponse
       .replace(/^```json\s*/i, '')

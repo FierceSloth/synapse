@@ -26,10 +26,17 @@ export async function POST(req: Request) {
       transcript,
     });
 
-    const synthesizedAnswer = await callGemini([{ role: 'user', parts: [{ text: userPrompt }] }], {
-      systemInstruction,
-      temperature: 0.5,
-    });
+    const headerKey = req.headers.get('x-gemini-api-key');
+    const customApiKey = (headerKey || (body as { apiKey?: string }).apiKey || '').trim() || undefined;
+
+    const synthesizedAnswer = await callGemini(
+      [{ role: 'user', parts: [{ text: userPrompt }] }],
+      {
+        systemInstruction,
+        temperature: 0.5,
+      },
+      customApiKey
+    );
 
     return NextResponse.json({ answer: synthesizedAnswer });
   } catch (error) {

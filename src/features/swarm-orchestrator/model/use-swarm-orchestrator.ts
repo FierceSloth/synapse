@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { DELIBERATION_STAGES, PATTERN_AGENTS } from '@/entities/agent';
 import { useChatStore, type AgentDebateMessage, type ChatIteration, type ClarificationQuestion } from '@/entities/chat';
 import type { PatternId } from '@/entities/pattern';
+import { useSettingsStore } from '@/entities/settings';
 
 export interface UseSwarmOrchestratorOptions {
   chatId: string;
@@ -16,6 +17,7 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
   const addDebateMessage = useChatStore((state) => state.addDebateMessage);
   const injectHumanGuidanceStore = useChatStore((state) => state.injectHumanGuidance);
   const setFinalAnswer = useChatStore((state) => state.setFinalAnswer);
+  const geminiApiKey = useSettingsStore((state) => state.geminiApiKey);
 
   const [isPaused, setIsPaused] = useState(false);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
@@ -49,10 +51,14 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
     if (iteration.questions && iteration.questions.length > 0) return;
 
     const controller = new AbortController();
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(geminiApiKey ? { 'x-gemini-api-key': geminiApiKey } : {}),
+    };
 
     fetch('/api/swarm/calibrate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       signal: controller.signal,
       body: JSON.stringify({
         prompt: iteration.userQuery,
@@ -87,7 +93,16 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
     return () => {
       controller.abort();
     };
-  }, [chatId, iteration.id, iteration.status, iteration.userQuery, iteration.questions, patternId, updateIteration]);
+  }, [
+    chatId,
+    iteration.id,
+    iteration.status,
+    iteration.userQuery,
+    iteration.questions,
+    patternId,
+    geminiApiKey,
+    updateIteration,
+  ]);
 
   useEffect(() => {
     if (iteration.status !== 'debating') {
@@ -124,9 +139,14 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
     const controller = new AbortController();
 
     const timer = setTimeout(() => {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(geminiApiKey ? { 'x-gemini-api-key': geminiApiKey } : {}),
+      };
+
       fetch('/api/swarm/deliberate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         signal: controller.signal,
         body: JSON.stringify({
           prompt: iteration.userQuery,
@@ -183,6 +203,7 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
     patternId,
     agents,
     isPaused,
+    geminiApiKey,
     addDebateMessage,
     updateIteration,
   ]);
@@ -200,9 +221,14 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
         isHuman: d.isHuman,
       }));
 
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(geminiApiKey ? { 'x-gemini-api-key': geminiApiKey } : {}),
+      };
+
       const res = await fetch('/api/swarm/synthesize', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           prompt: iteration.userQuery,
           patternId,
@@ -230,6 +256,7 @@ export function useSwarmOrchestrator({ chatId, patternId, iteration }: UseSwarmO
     iteration.answers,
     iteration.debates,
     patternId,
+    geminiApiKey,
     isSynthesizing,
     setFinalAnswer,
   ]);

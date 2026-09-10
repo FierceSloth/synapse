@@ -257,6 +257,203 @@
   text-transform: uppercase;
 }
 
+.keyAlertBanner {
+  margin: 10px 14px 8px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(26, 16, 5, 0.96) 0%, rgba(44, 22, 5, 0.94) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.65);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  z-index: var(--z-elevated);
+  animation: alertPulseGlow 2.8s ease-in-out infinite;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(34, 20, 6, 0.98) 0%, rgba(56, 28, 6, 0.96) 100%);
+    border-color: rgba(251, 191, 36, 0.95);
+    box-shadow:
+      0 0 24px rgba(245, 158, 11, 0.4),
+      inset 0 0 14px rgba(245, 158, 11, 0.12);
+
+    .alertCta {
+      background: #fbbf24;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.75);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid #f59e0b;
+    outline-offset: 2px;
+  }
+}
+
+.alertHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.alertTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+}
+
+.alertBeaconWrap {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alertBeaconDot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.alertBeaconPing {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.8);
+  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.alertKeyIcon {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.7));
+}
+
+.alertDismissBtn {
+  background: transparent;
+  border: none;
+  color: rgba(245, 158, 11, 0.6);
+  cursor: pointer;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+
+  &:hover {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.2);
+  }
+}
+
+.alertText {
+  margin: 0 0 10px 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.alertCtaRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.alertCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #030712;
+  background: #f59e0b;
+  padding: 4px 9px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.45);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alertPointer {
+  position: absolute;
+  bottom: -5px;
+  right: 22px;
+  width: 9px;
+  height: 9px;
+  background: #2b1605;
+  border-right: 1px solid rgba(245, 158, 11, 0.7);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.7);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.settingsWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settingsAlertPulse {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+  pointer-events: none;
+  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes alertPulseGlow {
+  0%,
+  100% {
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow:
+      0 0 16px rgba(245, 158, 11, 0.25),
+      inset 0 0 8px rgba(245, 158, 11, 0.05);
+  }
+  50% {
+    border-color: rgba(251, 191, 36, 0.95);
+    box-shadow:
+      0 0 26px rgba(245, 158, 11, 0.5),
+      inset 0 0 14px rgba(245, 158, 11, 0.12);
+  }
+}
+
+@keyframes beaconPing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

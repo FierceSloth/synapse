@@ -30,13 +30,109 @@
   flex: 1;
 }
 
-.burgerBtn {
+.burgerWrapper {
+  position: relative;
   display: none;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  color: var(--cl-primary);
 
   @include media-md {
     display: inline-flex;
+  }
+}
+
+.burgerBtn {
+  color: var(--cl-primary);
+  flex-shrink: 0;
+}
+
+.burgerAlertDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+  pointer-events: none;
+  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.mobileKeyBanner {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, rgba(28, 16, 5, 0.95) 0%, rgba(52, 26, 6, 0.95) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.75);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  animation: mobileAlertGlow 2.6s ease-in-out infinite;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+
+  @include media-md {
+    display: inline-flex;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, rgba(38, 22, 6, 0.98) 0%, rgba(66, 32, 7, 0.98) 100%);
+    border-color: rgba(251, 191, 36, 0.95);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.beaconWrap {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beaconDot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.beaconPing {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.8);
+  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.keyIcon {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.7));
+}
+
+.bannerText {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #fbbf24;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+  white-space: nowrap;
+
+  @include media-xs {
+    font-size: 9px;
   }
 }
 
@@ -153,5 +249,29 @@
   50% {
     transform: scaleY(1);
     opacity: 0.75;
+  }
+}
+
+@keyframes mobileAlertGlow {
+  0%,
+  100% {
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+  }
+  50% {
+    border-color: rgba(251, 191, 36, 0.95);
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.5);
+  }
+}
+
+@keyframes beaconPing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
   }
 }

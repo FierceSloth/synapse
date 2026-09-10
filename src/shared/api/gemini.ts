@@ -29,10 +29,16 @@ interface GeminiApiResponse {
   error?: { message?: string };
 }
 
-export async function callGemini(messages: ContentMessage[], options: GenerateOptions = {}): Promise<string> {
-  const apiKey = process.env.GEMINI_API_KEY;
+export async function callGemini(
+  messages: ContentMessage[],
+  options: GenerateOptions = {},
+  customApiKey?: string
+): Promise<string> {
+  const apiKey = customApiKey && customApiKey.trim().length > 0 ? customApiKey.trim() : process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error('GEMINI_API_KEY is not configured in environment variables.');
+    throw new Error(
+      'GEMINI_API_KEY is not configured. Please specify your Gemini API Key in Settings or configure GEMINI_API_KEY in server environment.'
+    );
   }
 
   const model = options.model || GEMINI_MODEL;

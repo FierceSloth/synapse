@@ -1,9 +1,11 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import clsx from 'clsx';
 import {
   Atom as AtomIcon,
+  ChevronRight as ChevronRightIcon,
+  Key as KeyIcon,
   PlusSquare as PlusSquareIcon,
   Settings as SettingsIcon,
   Trash2 as Trash2Icon,
@@ -52,7 +54,11 @@ export function Sidebar({
 
   const settingsName = useSettingsStore((state) => state.name);
   const settingsRole = useSettingsStore((state) => state.role);
+  const settingsApiKey = useSettingsStore((state) => state.geminiApiKey);
   const openSettings = useSettingsStore((state) => state.openSettings);
+
+  const [isBannerDismissed, setIsBannerDismissed] = useState(false);
+  const hasApiKey = isMounted ? Boolean(settingsApiKey && settingsApiKey.trim().length > 0) : true;
 
   const effectiveSessions = sessions ?? (isMounted ? storeChats : []);
   const effectiveActiveId = activeSessionId !== undefined ? activeSessionId : isMounted ? storeCurrentChatId : null;
@@ -128,18 +134,73 @@ export function Sidebar({
         })}
       </div>
 
+      {!hasApiKey && !isBannerDismissed && (
+        <div
+          className={styles.keyAlertBanner}
+          onClick={openSettings}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openSettings();
+            }
+          }}
+          aria-label="Connect Gemini API Key in Settings"
+        >
+          <div className={styles.alertHeader}>
+            <div className={styles.alertTag}>
+              <span className={styles.alertBeaconWrap}>
+                <span className={styles.alertBeaconPing} />
+                <span className={styles.alertBeaconDot} />
+              </span>
+              <KeyIcon size={12} className={styles.alertKeyIcon} />
+              <span>API KEY REQUIRED</span>
+            </div>
+            <button
+              type="button"
+              className={styles.alertDismissBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsBannerDismissed(true);
+              }}
+              title="Dismiss alert"
+              aria-label="Dismiss API key alert"
+            >
+              <CloseIcon size={12} />
+            </button>
+          </div>
+
+          <p className={styles.alertText}>
+            Gemini API key is not connected. Configure your key in Settings to activate the neural swarm.
+          </p>
+
+          <div className={styles.alertCtaRow}>
+            <span className={styles.alertCta}>
+              <span>CONNECT KEY</span>
+              <ChevronRightIcon size={12} />
+            </span>
+          </div>
+
+          <span className={styles.alertPointer} />
+        </div>
+      )}
+
       <div className={styles.profile}>
         <div className={styles.avatar}>{avatarInitials}</div>
         <div className={styles.userInfo}>
           <div className={styles.userName}>{effectiveUserName}</div>
           <div className={styles.userRole}>{effectiveUserRole}</div>
         </div>
-        <IconButton
-          icon={<SettingsIcon size={16} />}
-          title="System Settings"
-          aria-label="System Settings"
-          onClick={openSettings}
-        />
+        <div className={styles.settingsWrapper}>
+          <IconButton
+            icon={<SettingsIcon size={16} />}
+            title="System Settings"
+            aria-label="System Settings"
+            onClick={openSettings}
+          />
+          {!hasApiKey && <span className={styles.settingsAlertPulse} title="API Key Required" />}
+        </div>
       </div>
     </aside>
   );

@@ -57,10 +57,17 @@ export async function POST(req: Request) {
       humanGuidance,
     });
 
-    const responseText = await callGemini([{ role: 'user', parts: [{ text: userPrompt }] }], {
-      systemInstruction,
-      temperature: 0.75,
-    });
+    const headerKey = req.headers.get('x-gemini-api-key');
+    const customApiKey = (headerKey || (body as { apiKey?: string }).apiKey || '').trim() || undefined;
+
+    const responseText = await callGemini(
+      [{ role: 'user', parts: [{ text: userPrompt }] }],
+      {
+        systemInstruction,
+        temperature: 0.75,
+      },
+      customApiKey
+    );
 
     const cleanedText = responseText.replace(/^["']|["']$/g, '').trim();
 
