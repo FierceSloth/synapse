@@ -90,10 +90,84 @@
   }
 }
 
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 12px 0;
+}
+
+.loadingPulseRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.loadingDotPulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cl-primary);
+  box-shadow: 0 0 10px var(--cl-primary);
+  animation: pulse 1.2s infinite;
+}
+
+.loadingText {
+  color: var(--cl-primary);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.skeletonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeletonBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeletonTitle {
+  width: 220px;
+  height: 14px;
+  background: rgba(0, 240, 255, 0.15);
+  border-radius: 2px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeletonChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skeletonChip {
+  width: 140px;
+  height: 28px;
+  background: rgba(8, 51, 68, 0.4);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 2px;
+  animation: pulse 1.5s infinite ease-in-out;
+
+  &:nth-child(2) {
+    width: 180px;
+    animation-delay: 0.2s;
+  }
+  &:nth-child(3) {
+    width: 120px;
+    animation-delay: 0.4s;
+  }
+}
+
 .questionBlock {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  animation: fadeIn 0.3s ease;
 }
 
 .questionTitle {
@@ -125,7 +199,7 @@
   border-radius: 1px;
   font-family: inherit;
 
-  &:hover:not(.chipActive) {
+  &:hover:not(.chipActive):not(:disabled) {
     background: rgba(0, 240, 255, 0.08);
     border-color: rgba(0, 240, 255, 0.4);
     color: var(--cl-primary);
@@ -137,6 +211,11 @@
     border-color: var(--cl-primary);
     color: var(--cl-primary);
     font-weight: 600;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.85;
   }
 }
 
@@ -169,20 +248,18 @@
   justify-content: center;
   font-family: inherit;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: rgba(0, 240, 255, 0.3);
     box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: scale(0.99);
   }
-}
 
-.shimmer {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(0, 240, 255, 0.3) 50%, transparent 100%);
-  transform: translateX(-100%);
-  pointer-events: none;
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: rgba(0, 240, 255, 0.2);
+  }
 }

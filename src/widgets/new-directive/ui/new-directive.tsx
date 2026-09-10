@@ -22,7 +22,7 @@ export function NewDirective({ initialPrompt, onEngage }: NewDirectiveProps) {
   };
 
   const handleEngage = (prompt: string, options: { depth: number }) => {
-    createChat(prompt, selectedPatternId);
+    createChat(prompt, selectedPatternId, options.depth);
     onEngage?.(prompt, options);
   };
 

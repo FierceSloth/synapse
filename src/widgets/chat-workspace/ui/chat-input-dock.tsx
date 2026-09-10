@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@shared/ui';
-import clsx from 'clsx';
 import { Terminal as TerminalIcon } from 'lucide-react';
 import { useState, type KeyboardEvent } from 'react';
 import styles from './chat-input-dock.module.scss';
@@ -11,6 +10,8 @@ export interface ChatInputDockProps {
   onCancel?: () => void;
   placeholder?: string;
   inputRef?: React.RefObject<HTMLInputElement | null>;
+  isActionActive?: boolean;
+  initialValue?: string;
 }
 
 export function ChatInputDock({
@@ -18,31 +19,33 @@ export function ChatInputDock({
   onCancel,
   placeholder = 'Ask a follow-up, challenge an agent, or request changes...',
   inputRef,
+  isActionActive = false,
+  initialValue = '',
 }: ChatInputDockProps) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
 
   const hasText = value.trim().length > 0;
 
   const handleSubmit = () => {
-    if (!hasText) return;
+    if (isActionActive || !hasText) return;
     onSubmit(value.trim());
     setValue('');
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (isActionActive) {
+      e.preventDefault();
+      return;
+    }
     if (e.key === 'Enter') {
       e.preventDefault();
       handleSubmit();
     }
   };
 
-  const handleActionClick = () => {
-    if (hasText) {
-      handleSubmit();
-    } else {
-      setValue('');
-      onCancel?.();
-    }
+  const handleCancelClick = () => {
+    onCancel?.();
+    setValue('');
   };
 
   return (
@@ -58,16 +61,28 @@ export function ChatInputDock({
             ref={inputRef}
             type="text"
             className={styles.dockInput}
-            value={value}
+            value={isActionActive ? '' : value}
+            disabled={isActionActive}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={placeholder}
+            placeholder={isActionActive ? 'SWARM DELIBERATION IN PROGRESS...' : placeholder}
             aria-label="Directive follow-up input"
           />
 
-          <Button variant="cyber" className={clsx(styles.dockActionBtn)} onClick={handleActionClick}>
-            {hasText ? '[ SEND ↵ ]' : '[ CANCEL ]'}
-          </Button>
+          {isActionActive ? (
+            <Button
+              variant="cyber"
+              className={styles.dockActionBtn}
+              onClick={handleCancelClick}
+              title="Cancel active deliberation and write a new prompt"
+            >
+              [ CANCEL ]
+            </Button>
+          ) : (
+            <Button variant="cyber" className={styles.dockActionBtn} disabled={!hasText} onClick={handleSubmit}>
+              [ SEND ↵ ]
+            </Button>
+          )}
         </div>
 
         <div className={styles.disclaimer}>SynapseOS — is powered by AI. It may make mistakes.</div>

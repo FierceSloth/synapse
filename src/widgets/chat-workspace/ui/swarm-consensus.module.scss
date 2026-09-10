@@ -6,8 +6,21 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: fadeIn 0.4s ease-out;
+  animation: consensusReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   font-family: var(--font-mono);
+}
+
+@keyframes consensusReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.99);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
 
 .badgeWrapper {
@@ -21,9 +34,11 @@
   gap: 12px;
   padding: 6px 16px 6px 10px;
   background: rgba(0, 240, 255, 0.1);
-  border: 1px solid rgba(0, 240, 255, 0.3);
+  border: 1px solid rgba(0, 240, 255, 0.4);
   border-radius: 9999px;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+  box-shadow:
+    0 0 15px rgba(0, 240, 255, 0.2),
+    0 0 30px rgba(0, 240, 255, 0.05);
   backdrop-filter: blur(6px);
 }
 
@@ -32,7 +47,7 @@
   height: 20px;
   border-radius: 50%;
   background: rgba(0, 240, 255, 0.2);
-  border: 1px solid rgba(0, 240, 255, 0.5);
+  border: 1px solid rgba(0, 240, 255, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,4 +72,45 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.bottomBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  border-radius: 4px;
+  color: var(--cl-secondary);
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 240, 255, 0.08);
+    border-color: rgba(0, 240, 255, 0.45);
+    color: var(--cl-primary);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+  }
+}
+
+.copyText {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.copyCheckIcon {
+  color: #34d399;
 }

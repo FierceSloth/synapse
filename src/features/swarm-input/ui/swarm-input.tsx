@@ -13,9 +13,17 @@ export interface SwarmInputProps {
   onEngage?: (prompt: string, options: { depth: number }) => void;
 }
 
+export const DEPTH_CONFIG: Record<number, { title: string; desc: string }> = {
+  1: { title: '1/5', desc: '1 Agent (Express)' },
+  2: { title: '2/5', desc: '2 Agents (Dialogue)' },
+  3: { title: '3/5', desc: '3 Agents (Council)' },
+  4: { title: '4/5', desc: '4 Agents (Deep Audit)' },
+  5: { title: '5/5', desc: '5 Agents (Full Swarm)' },
+};
+
 export function SwarmInput({ initialPrompt = '', onEngage }: SwarmInputProps) {
   const [prompt, setPrompt] = useState(initialPrompt);
-  const [depth, setDepth] = useState(3);
+  const [depth, setDepth] = useState(5);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const charsCount = prompt.length;
@@ -28,10 +36,20 @@ export function SwarmInput({ initialPrompt = '', onEngage }: SwarmInputProps) {
     }
   }, [prompt]);
 
+  const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt(e.target.value);
+  };
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      e.target.value = '';
-    }
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      setPrompt((prev) => (prev ? `${prev}\n\n[FILE: ${file.name}]\n${content}` : `[FILE: ${file.name}]\n${content}`));
+    };
+    reader.readAsText(file);
   };
 
   const handleEngageClick = () => {
@@ -58,9 +76,10 @@ export function SwarmInput({ initialPrompt = '', onEngage }: SwarmInputProps) {
         <textarea
           className={styles.textarea}
           value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={handlePromptChange}
           placeholder="ENTER DIRECTIVE FOR MULTI-AGENT SWARM DELIBERATION..."
           rows={4}
+          aria-label="Directive Prompt Input"
         />
       </div>
 
@@ -85,7 +104,10 @@ export function SwarmInput({ initialPrompt = '', onEngage }: SwarmInputProps) {
 
           <div className={styles.divider} />
 
-          <div className={styles.depthControl}>
+          <div
+            className={styles.depthControl}
+            title={`Swarm depth: ${DEPTH_CONFIG[depth]?.desc} — sequential multi-agent analysis`}
+          >
             <span>DEPTH:</span>
             <div className={styles.depthBars}>
               {[1, 2, 3, 4, 5].map((level) => (
@@ -95,10 +117,11 @@ export function SwarmInput({ initialPrompt = '', onEngage }: SwarmInputProps) {
                   onClick={() => setDepth(level)}
                   role="button"
                   tabIndex={0}
-                  title={`Depth level ${level}`}
+                  title={`Level ${level}: ${DEPTH_CONFIG[level]?.desc}`}
                 />
               ))}
             </div>
+            <span className={styles.depthBadge}>{DEPTH_CONFIG[depth]?.desc}</span>
           </div>
 
           <div className={styles.divider} />

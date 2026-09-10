@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useChatStore } from '@/entities/chat';
 import type { SessionLog } from '@/entities/session';
-import { MOCK_USER, type UserProfile } from '@/entities/user';
+import { DEFAULT_USER, type UserProfile } from '@/entities/user';
 import { getInitials } from '@/shared/lib';
 import { Button, IconButton } from '@/shared/ui';
 import styles from './sidebar.module.scss';
@@ -32,7 +32,7 @@ export function Sidebar({
   onSelectSession,
   onNewSession,
   onDeleteSession,
-  user = MOCK_USER,
+  user = DEFAULT_USER,
 }: SidebarProps) {
   const isMounted = useSyncExternalStore(
     emptySubscribe,
